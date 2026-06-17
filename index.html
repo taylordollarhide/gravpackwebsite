@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GravPack — Know what you have. Be ready for what's next.</title>
+  <meta name="description" content="GravPack is a premium preparedness app for tracking food, water, freezer inventory, medications, go-bags, expiration dates, and household readiness." />
+  <meta property="og:title" content="GravPack — Know what you have. Be ready for what's next." />
+  <meta property="og:description" content="Track your pantry, freezer, medications, water storage, and go-bags. A clean operating system for household readiness." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #080b10;
+      --panel: #10151d;
+      --panel2: #151b25;
+      --text: #f7f8fa;
+      --muted: #aab2bd;
+      --line: rgba(255,255,255,.12);
+      --red: #e31c23;
+      --red2: #b81017;
+      --cream: #f0e7d7;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius: 999px;
+      padding: 9px 16px;
+      color: #d7dde5;
+      font-size: 13px;
+      letter-spacing: .02em;
+      backdrop-filter: blur(14px);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 14px var(--red);
+      flex-shrink: 0;
+    }
+
+    /* ── NAV ── */
+    header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(8,11,16,.78);
+      backdrop-filter: blur(20px);
+    }
+    nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { height: 28px; width: auto; }
+    .links { display: flex; align-items: center; gap: 28px; color: #c5ccd6; font-size: 14px; }
+    .links a:hover { color: #fff; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      border: 1px solid transparent;
+      transition: opacity .15s, transform .15s;
+      cursor: pointer;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn.primary { background: var(--red); color: white; box-shadow: 0 12px 36px rgba(227,28,35,.30); }
+    .btn.secondary { border-color: var(--line); background: rgba(255,255,255,.06); color: #fff; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 980px;
+      padding: 160px 0 90px;
+      overflow: hidden;
+    }
+    .hero:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(8,11,16,.97), rgba(8,11,16,.76) 44%, rgba(8,11,16,.22)),
+        url('assets/mountains.png') center / cover no-repeat;
+      opacity: .92;
+    }
+    .hero:after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -35% -20%;
+      height: 520px;
+      background: radial-gradient(circle at center, rgba(227,28,35,.16), transparent 58%);
+    }
+    .heroGrid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      gap: 54px;
+      align-items: center;
+    }
+    .eyebrow { margin-bottom: 22px; }
+    .h1 {
+      font-size: clamp(56px, 7vw, 104px);
+      line-height: .91;
+      letter-spacing: -.075em;
+      margin: 0 0 24px;
+      font-weight: 950;
+    }
+    .h1 span { color: var(--red); }
+    .lead { font-size: clamp(18px, 2vw, 23px); color: #d3d9e2; max-width: 660px; margin: 0 0 34px; }
+    .cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 34px; }
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 620px;
+    }
+    .proof div {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      border-radius: 22px;
+      padding: 17px;
+    }
+    .proof strong { display: block; font-size: 20px; font-weight: 700; }
+    .proof span { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+    /* ── PHONE STACK ── */
+    .phoneStack { position: relative; height: 720px; }
+    .phone {
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 42px;
+      overflow: hidden;
+      background: #0d1118;
+      box-shadow: 0 38px 80px rgba(0,0,0,.58);
+    }
+    .phone img { height: 100%; width: 100%; object-fit: cover; }
+    .phone.main { right: 20px; top: 0; width: 360px; height: 690px; }
+    .phone.back { left: 0; top: 86px; width: 300px; height: 580px; filter: saturate(.82); opacity: .72; transform: rotate(-7deg); }
+
+    /* phone placeholder gradient when image missing */
+    .phone-placeholder {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(160deg, #1a2030 0%, #0d1118 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glassCard {
+      position: absolute;
+      right: 268px;
+      bottom: 72px;
+      width: 280px;
+      border: 1px solid var(--line);
+      background: rgba(10,14,21,.82);
+      backdrop-filter: blur(24px);
+      border-radius: 26px;
+      padding: 20px;
+      box-shadow: 0 28px 80px rgba(0,0,0,.4);
+    }
+    .glassCard b { display: block; font-size: 14px; font-weight: 600; }
+    .glassCard .bar { height: 8px; border-radius: 20px; background: rgba(255,255,255,.1); overflow: hidden; margin: 14px 0; }
+    .glassCard .bar i { display: block; width: 72%; height: 100%; background: var(--red); border-radius: 20px; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 112px 0; border-top: 1px solid rgba(255,255,255,.08); }
+    .sectionTitle {
+      font-size: clamp(36px, 5vw, 66px);
+      line-height: .96;
+      letter-spacing: -.055em;
+      margin: 0 0 18px;
+      font-weight: 950;
+    }
+    .sectionLead { font-size: 19px; color: var(--muted); max-width: 760px; margin: 0 0 44px; }
+
+    /* ── FEATURE CARDS ── */
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border-radius: 30px;
+      padding: 28px;
+      min-height: 245px;
+    }
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(227,28,35,.14);
+      display: grid;
+      place-items: center;
+      color: #ff6870;
+      font-weight: 950;
+      font-size: 13px;
+      margin-bottom: 34px;
+    }
+    .card h3 { font-size: 24px; margin: 0 0 10px; letter-spacing: -.02em; }
+    .card p { color: var(--muted); margin: 0; }
+
+    /* ── SPLIT ── */
+    .split { display: grid; grid-template-columns: .92fr 1.08fr; gap: 52px; align-items: center; }
+
+    /* ── SHOWCASE ── */
+    .showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .shot {
+      border-radius: 34px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #111823;
+      min-height: 470px;
+    }
+    .shot img { height: 100%; width: 100%; object-fit: cover; }
+
+    /* ── INVENTORY PANEL ── */
+    .inventory {
+      border-radius: 38px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #111721, #090c11);
+      padding: 30px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 18px 0;
+      color: #dce2ea;
+    }
+    .row:first-child { padding-top: 0; }
+    .row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .row span { color: var(--muted); font-size: 14px; }
+
+    /* ── RED PANEL ── */
+    .redPanel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 44px;
+      background: linear-gradient(135deg, var(--red), var(--red2));
+      padding: 62px;
+    }
+    .redPanel:after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      bottom: -170px;
+      width: 500px;
+      height: 500px;
+      background: url('assets/app-icon.png') center / contain no-repeat;
+      opacity: .14;
+    }
+    .redPanel h2 {
+      position: relative;
+      font-size: clamp(40px, 5vw, 70px);
+      line-height: .94;
+      letter-spacing: -.06em;
+      margin: 0 0 20px;
+      font-weight: 950;
+    }
+    .redPanel p {
+      position: relative;
+      max-width: 660px;
+      font-size: 20px;
+      margin: 0 0 30px;
+      color: rgba(255,255,255,.88);
+    }
+
+    /* ── WAITLIST FORM ── */
+    .formPanel {
+      border-radius: 38px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #111721, #090c11);
+      padding: 36px;
+    }
+    .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .field label { font-size: 13px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+    .field input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: white;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus { border-color: rgba(227,28,35,.6); }
+    .field input::placeholder { color: rgba(255,255,255,.3); }
+
+    /* ── FOOTER ── */
+    footer { padding: 56px 0; color: var(--muted); border-top: 1px solid rgba(255,255,255,.08); }
+    .foot { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+    .foot img { height: 24px; opacity: .88; }
+    .foot-links { display: flex; gap: 24px; font-size: 14px; }
+    .foot-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .links { display: none; }
+      .hero { padding-top: 124px; min-height: auto; }
+      .heroGrid, .split { grid-template-columns: 1fr; }
+      .phoneStack { height: 580px; }
+      .phone.main { right: 0; width: 280px; height: 540px; }
+      .phone.back { width: 220px; height: 440px; }
+      .glassCard { right: auto; left: 12px; }
+      .proof, .cards { grid-template-columns: 1fr; }
+      .showcase { grid-template-columns: 1fr; }
+      .shot { min-height: 300px; }
+      .redPanel { padding: 36px; border-radius: 28px; }
+      .foot { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#">
+        <img src="assets/logo-lockup.png" alt="GravPack" />
+      </a>
+      <div class="links">
+        <a href="#system">System</a>
+        <a href="#features">Features</a>
+        <a href="#readiness">Readiness</a>
+        <a class="btn secondary" href="#waitlist" style="padding:10px 18px;font-size:13px;">Join waitlist</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap heroGrid">
+    <div>
+      <div class="pill eyebrow">
+        <span class="dot"></span>
+        Private beta opening soon
+      </div>
+      <h1 class="h1">Preparedness<br>without the<br><span>paranoia.</span></h1>
+      <p class="lead">GravPack turns your pantry, freezer, medications, water storage, and go-bags into a clean operating system for household readiness.</p>
+      <div class="cta">
+        <a class="btn primary" href="#waitlist">Get early access</a>
+        <a class="btn secondary" href="#system">See the system</a>
+      </div>
+      <div class="proof">
+        <div>
+          <strong>Inventory</strong>
+          <span>Know what you own</span>
+        </div>
+        <div>
+          <strong>Rotation</strong>
+          <span>Use it before it expires</span>
+        </div>
+        <div>
+          <strong>Readiness</strong>
+          <span>Plan without guesswork</span>
+        </div>
+      </div>
+    </div>
+    <div class="phoneStack">
+      <div class="phone back">
+        <img src="assets/freezer.png" alt="Freezer inventory" onerror="this.parentElement.style.background='linear-gradient(160deg,#1a2232,#0d1118)';this.style.display='none'" />
+      </div>
+      <div class="phone main">
+        <img src="assets/pantry.png" alt="Pantry inventory" onerror="this.parentElement.style.background='linear-gradient(160deg,#1c2030,#0d1118)';this.style.display='none'" />
+      </div>
+      <div class="glassCard">
+        <b>Household readiness score</b>
+        <div class="bar"><i></i></div>
+        <span style="color:var(--muted);font-size:13px">72% stocked · 9 items aging out</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section class="section" id="system">
+  <div class="wrap split">
+    <div>
+      <h2 class="sectionTitle">A premium control center for the stuff that keeps you covered.</h2>
+      <p class="sectionLead">Most preparedness tools feel like spreadsheets with a bunker logo. GravPack should feel closer to a private banking app: calm, organized, useful, and built for real households.</p>
+      <div class="inventory">
+        <div class="row"><b>Freezer</b><span>34 items · 6 aging</span></div>
+        <div class="row"><b>Pantry</b><span>112 items · 14 rotate soon</span></div>
+        <div class="row"><b>Medication</b><span>8 active · 2 expired</span></div>
+        <div class="row"><b>Water</b><span>18 gallons · 4 people</span></div>
+        <div class="row"><b>Go-bags</b><span>3 packs · 81% complete</span></div>
+      </div>
+    </div>
+    <div class="showcase">
+      <div class="shot">
+        <img src="assets/meds.jpg" alt="Medication tracking" onerror="this.style.display='none'" />
+      </div>
+      <div class="shot">
+        <img src="assets/denver.png" alt="Urban readiness" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="wrap">
+    <h2 class="sectionTitle">Built around real prep behavior.</h2>
+    <p class="sectionLead">The app helps normal people keep supplies usable, visible, and ready — not push them into fear-based buying.</p>
+    <div class="cards">
+      <article class="card">
+        <div class="icon">01</div>
+        <h3>Scan and store</h3>
+        <p>Add food, water, medication, documents, tools, kits, and freezer inventory with photos, categories, quantities, and location.</p>
+      </article>
+      <article class="card">
+        <div class="icon">02</div>
+        <h3>Expiration intelligence</h3>
+        <p>Track best-by dates, medication dates, freezer age, and rotation windows so supplies get used instead of wasted.</p>
+      </article>
+      <article class="card">
+        <div class="icon">03</div>
+        <h3>Readiness plans</h3>
+        <p>Build household profiles, emergency scenarios, go-bag checklists, and gap reports based on people, pets, and duration.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- READINESS CTA -->
+<section class="section" id="readiness">
+  <div class="wrap">
+    <div class="redPanel">
+      <h2>Know the gap before<br>the gap matters.</h2>
+      <p>GravPack gives your household a living readiness layer: what you have, where it is, what expires next, and what needs to be replenished.</p>
+      <a class="btn secondary" href="#waitlist">Reserve a beta spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="section" id="waitlist">
+  <div class="wrap split">
+    <div>
+      <h2 class="sectionTitle">Early access for practical households.</h2>
+      <p class="sectionLead">Start with inventory. Expand into readiness scoring, family sharing, offline access, barcode capture, and smart replenishment.</p>
+    </div>
+    <form class="formPanel" onsubmit="handleSubmit(event)">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" name="name" placeholder="Taylor Dollarhide" required />
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="you@email.com" required />
+      </div>
+      <button class="btn primary" type="submit" style="width:100%;border:0;font-size:15px;">Join the waitlist</button>
+      <p id="form-msg" style="margin:16px 0 0;font-size:14px;color:var(--muted);text-align:center;display:none;"></p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <img src="assets/logo-lockup.png" alt="GravPack" />
+    <div class="foot-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@gravpack.com">Contact</a>
+    </div>
+    <span>© 2026 GravPack. Built for calm, useful readiness.</span>
+  </div>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const msg = document.getElementById('form-msg');
+    msg.textContent = "You're on the list. We'll be in touch soon.";
+    msg.style.display = 'block';
+    e.target.querySelector('button').disabled = true;
+    e.target.querySelector('button').textContent = 'You\'re on the list';
+  }
+</script>
+</body>
+</html>
