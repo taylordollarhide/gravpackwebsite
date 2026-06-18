@@ -471,15 +471,19 @@
       <input type="hidden" name="form-name" value="waitlist" />
       <div class="field">
         <label>Name</label>
-        <input type="text" name="name" placeholder="Taylor Dollarhide" required />
+        <input type="text" name="name" placeholder="Your name" required />
       </div>
       <div class="field">
         <label>Email</label>
         <input type="email" name="email" placeholder="you@email.com" required />
       </div>
       <button class="btn primary" type="submit" style="width:100%;border:0;font-size:15px;">Join the waitlist</button>
-      <p id="form-msg" style="margin:16px 0 0;font-size:14px;color:var(--muted);text-align:center;display:none;"></p>
     </form>
+    <div id="form-success" style="display:none;border-radius:38px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,#111721,#090c11);padding:36px;text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:rgba(227,28,35,.14);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px;">✓</div>
+      <h3 style="margin:0 0 10px;font-size:22px;letter-spacing:-.02em;">You're on the list.</h3>
+      <p style="margin:0;color:var(--muted);font-size:15px;max-width:320px;margin:0 auto;">We'll reach out when beta access opens. In the meantime, tell a prepared friend.</p>
+    </div>
   </div>
 </section>
 
@@ -511,16 +515,13 @@
       body: new URLSearchParams(new FormData(form)).toString()
     })
     .then(() => {
-      msg.textContent = "You're on the list. We'll be in touch soon.";
-      msg.style.display = 'block';
-      btn.textContent = "You're on the list";
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
     })
     .catch(() => {
-      msg.textContent = 'Something went wrong. Try emailing hello@gravpack.com.';
-      msg.style.color = '#ff6870';
-      msg.style.display = 'block';
       btn.disabled = false;
       btn.textContent = 'Join the waitlist';
+      alert('Something went wrong. Try emailing hello@gravpack.com.');
     });
   }
 </script>
