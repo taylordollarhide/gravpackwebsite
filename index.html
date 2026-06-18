@@ -467,7 +467,8 @@
       <h2 class="sectionTitle">Early access for practical households.</h2>
       <p class="sectionLead">Start with inventory. Expand into readiness scoring, family sharing, offline access, barcode capture, and smart replenishment.</p>
     </div>
-    <form class="formPanel" onsubmit="handleSubmit(event)">
+    <form class="formPanel" name="waitlist" method="POST" data-netlify="true" onsubmit="handleSubmit(event)">
+      <input type="hidden" name="form-name" value="waitlist" />
       <div class="field">
         <label>Name</label>
         <input type="text" name="name" placeholder="Taylor Dollarhide" required />
@@ -498,11 +499,29 @@
 <script>
   function handleSubmit(e) {
     e.preventDefault();
+    const form = e.target;
     const msg = document.getElementById('form-msg');
-    msg.textContent = "You're on the list. We'll be in touch soon.";
-    msg.style.display = 'block';
-    e.target.querySelector('button').disabled = true;
-    e.target.querySelector('button').textContent = 'You\'re on the list';
+    const btn = form.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    })
+    .then(() => {
+      msg.textContent = "You're on the list. We'll be in touch soon.";
+      msg.style.display = 'block';
+      btn.textContent = "You're on the list";
+    })
+    .catch(() => {
+      msg.textContent = 'Something went wrong. Try emailing hello@gravpack.com.';
+      msg.style.color = '#ff6870';
+      msg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Join the waitlist';
+    });
   }
 </script>
 </body>
