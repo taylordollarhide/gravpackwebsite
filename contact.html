@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — GravPack</title>
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     :root {
       --bg: #080b10;
@@ -116,10 +117,17 @@
       background: rgba(255,255,255,.04);
     }
     .reason-icon {
-      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(227,28,35,.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
-      margin-top: 1px;
+      color: #ff6870;
     }
+    .reason-icon .material-icons { font-size: 20px; }
     .reason-text strong { display: block; font-size: 15px; margin-bottom: 3px; }
     .reason-text span { font-size: 13px; color: var(--muted); }
 
@@ -232,28 +240,28 @@
         <p class="subhead">No ticket system. No bot. Just a small team that cares whether your pantry is ready for a Tuesday power outage.</p>
         <div class="reasons">
           <div class="reason">
-            <div class="reason-icon">🛠</div>
+            <div class="reason-icon"><span class="material-icons">build</span></div>
             <div class="reason-text">
               <strong>Beta feedback</strong>
               <span>Found a bug? Have a feature idea? We want every word of it.</span>
             </div>
           </div>
           <div class="reason">
-            <div class="reason-icon">📦</div>
+            <div class="reason-icon"><span class="material-icons">inventory_2</span></div>
             <div class="reason-text">
               <strong>Product questions</strong>
               <span>Wondering if GravPack does that one thing? Ask. It might already exist.</span>
             </div>
           </div>
           <div class="reason">
-            <div class="reason-icon">🤝</div>
+            <div class="reason-icon"><span class="material-icons">handshake</span></div>
             <div class="reason-text">
               <strong>Partnerships</strong>
               <span>Press, integrations, or something else interesting — we're listening.</span>
             </div>
           </div>
           <div class="reason">
-            <div class="reason-icon">🔒</div>
+            <div class="reason-icon"><span class="material-icons">lock</span></div>
             <div class="reason-text">
               <strong>Privacy & data</strong>
               <span>Questions about how we handle your data. No runaround, just answers.</span>
